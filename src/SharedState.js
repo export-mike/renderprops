@@ -44,7 +44,7 @@ export class SharedStateProvider extends PureComponent {
 	createAction = (fn, scope) => {
 		return async (...args) => {
 			try {
-				const res = await fn.apply(this, [...args, this.getState]);
+				const res = await fn.apply(this, [...args, this.getState, this.updateState(scope)]);
 				this.setState({
 					...this.state,
 					[scope]: {
@@ -57,6 +57,15 @@ export class SharedStateProvider extends PureComponent {
 				throw (e);
 			}
 		}
+	}
+	updateState = (scope) => res => {
+		this.setState({
+			...this.state,
+			[scope]: {
+				...this.state[scope],
+				...res
+			}
+		}, () => this.onChange());
 	}
 	render() {
 		return this.props.children;
