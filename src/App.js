@@ -6,7 +6,8 @@ const sharedState = createSharedState({
 	user: {
 		username: 'mikejames',
 		token: null,
-		login: data => ({token: '12313'})
+		login: data => ({token: '12313'}),
+		logout: () => ({token: null})
 	}
 });
 
@@ -43,9 +44,15 @@ const Login = () =>
 </WithSharedState>
 const SayHi = () =>
 	<WithSharedState
-		selector={state => ({user: state.user})}>
-		{({user}) =>
-			<span>Hi! {user.username}</span>
+		selector={state => ({user: state.user})}
+		actions={actions => ({logout: actions.user.logout})}>
+		{({user, logout}) =>
+			<div>
+				<span>Hi! {user.username}</span>
+				<button onClick={() => logout()}>
+					Logout
+				</button>
+			</div>
 		}
 	</WithSharedState>
 export default App;
