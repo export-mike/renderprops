@@ -51,7 +51,7 @@ export class SharedStateProvider extends PureComponent {
 						...this.state[scope],
 						...res
 					}
-				});
+				}, () => this.onChange());
 			} catch (e) {
 				console.error(e);
 				throw (e);

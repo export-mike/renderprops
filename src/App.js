@@ -4,7 +4,9 @@ import './App.css';
 import {SharedStateProvider, WithSharedState, createSharedState} from './SharedState';
 const sharedState = createSharedState({
 	user: {
-		username: 'mikejames'
+		username: 'mikejames',
+		token: null,
+		login: data => ({token: '12313'})
 	}
 });
 
@@ -21,7 +23,10 @@ class App extends Component {
         </p>
 				<SharedStateProvider state={sharedState}>
 					<WithSharedState selector={state => ({user: state.user})}>
-						{({user}) => <span>Hi! {user.username}</span>}
+						{({user}) => <div>
+							{!user.token && <Login />}
+							{user.token && <SayHi />}
+						</div>}
 					</WithSharedState>
 				</SharedStateProvider>
       </div>
@@ -29,4 +34,18 @@ class App extends Component {
   }
 }
 
+const Login = () =>
+<WithSharedState
+	actions={actions => ({login: actions.user.login})}>
+	{({login}) =>
+		<button onClick={() => login()}>Login!</button>
+	}
+</WithSharedState>
+const SayHi = () =>
+	<WithSharedState
+		selector={state => ({user: state.user})}>
+		{({user}) =>
+			<span>Hi! {user.username}</span>
+		}
+	</WithSharedState>
 export default App;
