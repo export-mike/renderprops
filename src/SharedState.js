@@ -72,7 +72,13 @@ export class WithSharedState extends PureComponent {
 		selector: () => ({})
 	}
 	componentWillMount(){
-		this.subscription = this.context.sharedState.onChange(() => this.forceUpdate());
+		this.subscription = this.context.sharedState.onChange(() => {
+			const state = this.context.sharedState.getState();
+			const scopedState = this.props.selector(state);
+			if (this._scopedState !== scopedState) {
+				this.forceUpdate();
+			}
+		});
 	}
 	componentWillUnmount() {
 		this.subscription();

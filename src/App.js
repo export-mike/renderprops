@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {SharedStateProvider, WithSharedState, createSharedState} from './SharedState';
@@ -10,7 +10,7 @@ const sharedState = createSharedState({
 	}
 });
 
-class App extends Component {
+class App extends PureComponent {
   render() {
     return (
       <div className="App">
